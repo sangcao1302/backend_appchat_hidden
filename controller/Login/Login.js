@@ -57,7 +57,7 @@ async function saveAdditionalInfo(req, res) {
 async function updateLocation(req, res) {
     const { userId } = req.body;
     try {
-        const response = await axios.get('https://api.ipgeolocation.io/ipgeo?apiKey=0d04b9614d52415fb04e7cd2f625ad11');
+        const response = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IP_GEOLOCATION_API_KEY}`);
         const location = response.data.state_prov;
 
         let user = await User.findById(userId);
