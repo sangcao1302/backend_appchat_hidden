@@ -56,18 +56,8 @@ async function saveAdditionalInfo(req, res) {
 
 async function updateLocation(req, res) {
     const { userId } = req.body;
-
     try {
-        // Get user's real IP from the request headers
-        let userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-        // Some proxies return multiple IPs, so we take the first one
-        if (userIp.includes(',')) {
-            userIp = userIp.split(',')[0].trim();
-        }
-
-        // Call the geolocation API with the user's real IP
-        const response = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IP_GEOLOCATION_API_KEY}&ip=${userIp}`);
+        const response = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IP_GEOLOCATION_API_KEY}`);
         const location = response.data.state_prov;
 
         let user = await User.findById(userId);
@@ -78,12 +68,44 @@ async function updateLocation(req, res) {
         user.location = location;
         await user.save();
 
-        res.json({ message: 'Location updated successfully', location, userIp });
+        res.json({ message: 'Location updated successfully', location });
     } catch (error) {
-        console.error("Error updating location:", error);
+        console.error("Error updating location:", error);  // Log the error
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+
+// async function updateLocation(req, res) {
+//     const { userId } = req.body;
+
+//     try {
+//         // Get user's real IP from the request headers
+//         let userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+//         // Some proxies return multiple IPs, so we take the first one
+//         if (userIp.includes(',')) {
+//             userIp = userIp.split(',')[0].trim();
+//         }
+
+//         // Call the geolocation API with the user's real IP
+//         const response = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IP_GEOLOCATION_API_KEY}&ip=${userIp}`);
+//         const location = response.data.state_prov;
+
+//         let user = await User.findById(userId);
+//         if (!user) {
+//             return res.status(400).json({ message: 'User not found' });
+//         }
+
+//         user.location = location;
+//         await user.save();
+
+//         res.json({ message: 'Location updated successfully', location, userIp });
+//     } catch (error) {
+//         console.error("Error updating location:", error);
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// };
 async function updatePlace(req, res) {
     const { userId, location } = req.body;
     const place = getRegion(location);
