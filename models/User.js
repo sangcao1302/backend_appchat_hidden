@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   age: { type: Number,  },
   location: { type: String,  },
     place: { type: String,  },
-  gender: { type: String, enum: ['male', 'female'],  }, // New gender field
+    gender: { type: String, enum: ['male', 'female', 'LGBT nam', 'LGBT nữ'],  }, // New gender field
   online: { type: Boolean, default: false },
   isSeekingMatch: { type: Boolean, default: false },
   matchedUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },

@@ -37,14 +37,17 @@ function initializeSocket(server) {
             }
 
             const oppositeGender = currentUser.gender === 'male' ? 'female' : 'male';
-
+            const oppositeLGBT =currentUser.gender === 'LGBT nam' ? 'LGBT nam' : 'LGBT nữ';
             let availableUsers = await User.find({
                 _id: { $ne: userId },
                 online: true,
                 isSeekingMatch: true,
                 location: currentUser.location,
                 age: { $gte: currentUser.age - 5, $lte: currentUser.age + 5 },
-                gender: oppositeGender // Ensure gender is opposite to the current user
+                $or:[{
+                    gender: oppositeGender,
+                    gender: oppositeLGBT
+                }] // Ensure gender is opposite to the current user
             });
             if (availableUsers.length === 0) {
                 availableUsers = await User.find({
@@ -53,7 +56,10 @@ function initializeSocket(server) {
                     isSeekingMatch: true,
                     place: currentUser.place,
                     age: { $gte: currentUser.age - 5, $lte: currentUser.age + 5 },
-                    gender: oppositeGender // Ensure gender is opposite to the current user
+                    $or:[{
+                        gender: oppositeGender,
+                        gender: oppositeLGBT
+                    }] // Ensure gender is opposite to the current user
                 });
             }
             const matchedUser = availableUsers.length ? availableUsers[0] : null;

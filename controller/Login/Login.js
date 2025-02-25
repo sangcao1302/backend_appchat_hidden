@@ -57,15 +57,13 @@ async function saveAdditionalInfo(req, res) {
 
 
 async function updateLocation(req, res) {
-    const { userId } = req.body;
+    const { userId,ip } = req.body;
 
     try {
         // Get user's real IP from the request headers
-        let userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-        // Some proxies return multiple IPs, so we take the first one
-        if (userIp.includes(',')) {
-            userIp = userIp.split(',')[0].trim();
+        let userIp = ip
+        if (!userIp) {
+            userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         }
 
         // Call the geolocation API with the user's real IP
