@@ -1,18 +1,8 @@
 
 const Message = require('../../models/Message');
+
 async function messagePost(req, res) {
     const { senderId, receiverId, text } = req.body;
-
-    const existingMessage = await Message.findOne({
-        senderId,
-        receiverId,
-        text,
-        createdAt: { $gt: new Date(Date.now() - 60000) } // 1 minute timeframe
-    });
-
-    if (existingMessage) {
-        return res.status(400).send('Duplicate message detected');
-    }
 
     const message = new Message({ senderId, receiverId, text });
 
@@ -27,6 +17,7 @@ async function messagePost(req, res) {
         }
     }
 }
+
 module.exports = {
     messagePost,
-}
+};

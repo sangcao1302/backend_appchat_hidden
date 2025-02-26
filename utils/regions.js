@@ -6,7 +6,7 @@ const regions = {
         "Da Nang", "Quang Binh", "Quang Nam", "Quang Ngai", "Thua Thien Hue", "Binh Dinh", "Binh Thuan", "Dak Lak", "Dak Nong", "Gia Lai", "Ha Tinh", "Khanh Hoa", "Kon Tum", "Lam Dong", "Nghe An", "Phu Yen", "Quang Tri"
     ],
     "Southern": [
-        "Ho Chi Minh City", "An Giang", "Ba Ria - Vung Tau", "Bac Lieu", "Ben Tre", "Binh Duong", "Binh Phuoc", "Ca Mau", "Can Tho", "Dong Nai", "Dong Thap", "Hau Giang", "Kien Giang", "Long An", "Soc Trang", "Tay Ninh", "Tien Giang", "Tra Vinh", "Vinh Long"
+        "Ho Chi Minh City", "An Giang", "Ba Ria - Vung Tau", "Bac Lieu", "Ben Tre", "Binh Duong", "Binh Phuoc", "Ca Mau", "Can Tho", "Dong Nai", "Dong Thap", "Hau Giang", "Kien Giang", "Long An", "Soc Trang", "Tay Ninh", "Tien Giang", "Tra Vinh", "Vinh Long", "Ho Chi Minh "
     ]
 };
 

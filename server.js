@@ -12,7 +12,7 @@ const messageGet=require('./routes/messageGetRoute')
 const initializeSocket = require('./socket/socket');
 const session = require('express-session');
 const bodyParser = require('body-parser'); // Parse JSON body
-
+const userrGet=require('./routes/userGetRoute')
 // require('./AuthController/authController');
 
 app.use(cors());
@@ -31,6 +31,7 @@ app.use(express.json());
 app.use('/api', authRoutes);
 app.use('/api',messagePost)
 app.use('/api', messageGet)
+app.use('/api',userrGet)
 
 
 
