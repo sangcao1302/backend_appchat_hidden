@@ -4,15 +4,19 @@ const http = require('http');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const User = require('./models/User');
+const User = require('./models/User'); 
+const initializeSocket = require('./socket/socket');
 const app = express();
+const server = http.createServer(app);
+const io = initializeSocket(server);
 const authRoutes = require('./routes/authRoutes');
 const messagePost=require('./routes/messagePostRoutes')
 const messageGet=require('./routes/messageGetRoute')
-const initializeSocket = require('./socket/socket');
+
 const session = require('express-session');
 const bodyParser = require('body-parser'); // Parse JSON body
-const userrGet=require('./routes/userGetRoute')
+const userGet=require('./routes/userGetRoute');
+const userPostBan = require('./routes/userBanRoute')(io)
 // require('./AuthController/authController');
 
 app.use(cors());
@@ -31,13 +35,12 @@ app.use(express.json());
 app.use('/api', authRoutes);
 app.use('/api',messagePost)
 app.use('/api', messageGet)
-app.use('/api',userrGet)
+app.use('/api',userGet)
+app.use('/api', userPostBan);
 
 
 
 
-const server = http.createServer(app);
-initializeSocket(server);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {

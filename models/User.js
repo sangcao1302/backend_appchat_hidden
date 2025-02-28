@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
   isSeekingMatch: { type: Boolean, default: false },
   matchedUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
     googleId: { type: String, required: true, unique: true },
+    BanCount: { type: Number, default: 0 },
+    Ban : { type: Boolean, default: false },
 
 });
 
