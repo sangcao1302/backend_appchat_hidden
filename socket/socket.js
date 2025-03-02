@@ -50,6 +50,7 @@
                 }
 
                 const oppositeGender = currentUser.gender === 'male' ? 'female' : 'male';
+
                 const oppositeLGBT =currentUser.gender === 'LGBT nam' ? 'LGBT nam' : 'LGBT nữ';
                 let availableUsers = await User.find({
                     _id: { $ne: userId },
@@ -71,7 +72,7 @@
                         age: { $gte: currentUser.age - 5, $lte: currentUser.age + 5 },
                         $or:[{
                             gender: oppositeGender,
-                            gender: oppositeLGBT
+                            // gender: oppositeLGBT
                         }] // Ensure gender is opposite to the current user
                     });
                 }
