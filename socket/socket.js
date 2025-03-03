@@ -52,30 +52,51 @@
                 const oppositeGender = currentUser.gender === 'male' ? 'female' : 'male';
 
                 const oppositeLGBT =currentUser.gender === 'LGBT nam' ? 'LGBT nam' : 'LGBT nữ';
+                // let availableUsers = await User.find({
+                //     _id: { $ne: userId },
+                //     online: true,
+                //     isSeekingMatch: true,
+                //     location: currentUser.location,
+                //     age: { $gte: currentUser.age - 5, $lte: currentUser.age + 5 },
+                //     $or:[
+                //         {gender: oppositeGender},
+                //         {gender: oppositeLGBT}
+                //     ] // Ensure gender is opposite to the current user
+                // });
+                // if (availableUsers.length === 0) {
+                //     availableUsers = await User.find({
+                //         _id: { $ne: userId },
+                //         online: true,
+                //         isSeekingMatch: true,
+                //         place: currentUser.place,
+                //         age: { $gte: currentUser.age - 5, $lte: currentUser.age + 5 },
+                //         $or: [
+                //             { gender: oppositeGender },
+                //             { gender: oppositeLGBT }
+                //         ]
+                //     });
+                // }
                 let availableUsers = await User.find({
                     _id: { $ne: userId },
                     online: true,
                     isSeekingMatch: true,
-                    location: currentUser.location,
                     age: { $gte: currentUser.age - 5, $lte: currentUser.age + 5 },
-                    $or:[{
-                        gender: oppositeGender,
-                        gender: oppositeLGBT
-                    }] // Ensure gender is opposite to the current user
+                    $and: [
+                        {
+                            $or: [
+                                { location: currentUser.location }, // Match by location
+                                { place: currentUser.place }       // If no match by location, match by place
+                            ]
+                        },
+                        {
+                            $or: [
+                                { gender: oppositeGender },  // Match opposite gender
+                                { gender: oppositeLGBT }     // Match opposite LGBT type
+                            ]
+                        }
+                    ]
                 });
-                if (availableUsers.length === 0) {
-                    availableUsers = await User.find({
-                        _id: { $ne: userId },
-                        online: true,
-                        isSeekingMatch: true,
-                        place: currentUser.place,
-                        age: { $gte: currentUser.age - 5, $lte: currentUser.age + 5 },
-                        $or:[{
-                            gender: oppositeGender,
-                            // gender: oppositeLGBT
-                        }] // Ensure gender is opposite to the current user
-                    });
-                }
+
                 const matchedUser = availableUsers.length ? availableUsers[0] : null;
 
                 if (matchedUser) {

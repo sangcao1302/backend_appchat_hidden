@@ -33,18 +33,15 @@ async function googleLogin(req, res) {
 };
 
 async function saveAdditionalInfo(req, res) {
-    const { userId, gender, age, location } = req.body;
-    const response = await axios.get('http://ip-api.com/json');
+    const { userId, gender, age } = req.body;
 
     try {
         let user = await User.findById(userId);
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
         }
-
         user.gender = gender;
         user.age = age;
-        user.location = response.data.city;
         await user.save();
 
         const token = generateToken(user);
