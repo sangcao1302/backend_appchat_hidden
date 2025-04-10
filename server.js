@@ -4,18 +4,19 @@ const http = require('http');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const User = require('./models/User'); 
+const User = require('./models/User');
 const initializeSocket = require('./socket/socket');
 const app = express();
 const server = http.createServer(app);
 const io = initializeSocket(server);
 const authRoutes = require('./routes/authRoutes');
-const messagePost=require('./routes/messagePostRoutes')
-const messageGet=require('./routes/messageGetRoute')
+const messagePost = require('./routes/messagePostRoutes')
+const messageGet = require('./routes/messageGetRoute')
+const fcmRoutes = require('./routes/fcmRoutes');
 
 const session = require('express-session');
 const bodyParser = require('body-parser'); // Parse JSON body
-const userGet=require('./routes/userGetRoute');
+const userGet = require('./routes/userGetRoute');
 const userPostBan = require('./routes/userBanRoute')(io)
 // require('./AuthController/authController');
 
@@ -33,10 +34,11 @@ app.use(session({ secret: process.env.GOOGLE_CLIENT_SECRET, resave: false, saveU
 
 app.use(express.json());
 app.use('/api', authRoutes);
-app.use('/api',messagePost)
+app.use('/api', messagePost)
 app.use('/api', messageGet)
-app.use('/api',userGet)
+app.use('/api', userGet)
 app.use('/api', userPostBan);
+app.use('/api/fcm', fcmRoutes);
 
 
 
@@ -44,11 +46,11 @@ app.use('/api', userPostBan);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch((error) => console.error('MongoDB connection error:', error));
+    .then(() => console.log('Connected to MongoDB'))
+    .catch((error) => console.error('MongoDB connection error:', error));
 
 // Track active users by socket ID
 const activeUsers = {};
@@ -262,7 +264,7 @@ const activeUsers = {};
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
 
 
